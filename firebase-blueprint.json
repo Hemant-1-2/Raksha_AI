@@ -1,0 +1,141 @@
+{
+  "entities": {
+    "SharedResult": {
+      "title": "SharedResult",
+      "description": "A read-only shared safety diagnostic result summary",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique short random identifier"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["scam", "payment", "investment"],
+          "description": "Type of safety check being shared"
+        },
+        "verdict": {
+          "type": "string",
+          "description": "Safety verdict"
+        },
+        "riskScore": {
+          "type": "number",
+          "description": "Calculated risk score from 0 to 100"
+        },
+        "explanation": {
+          "type": "string",
+          "description": "Explanation of the safety check findings"
+        },
+        "flags": {
+          "type": "array",
+          "description": "List of identified warning flags"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the shared link was generated"
+        },
+        "expiresAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the shared link will expire"
+        }
+      },
+      "required": ["id", "type", "verdict", "riskScore", "explanation", "createdAt", "expiresAt"]
+    },
+    "Check": {
+      "title": "Check",
+      "description": "Scam or Currency safety check record",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the check"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["scam", "currency"],
+          "description": "Type of safety check"
+        },
+        "inputSummary": {
+          "type": "string",
+          "description": "Truncated summary of the user input or description of image"
+        },
+        "verdict": {
+          "type": "string",
+          "description": "Safety verdict returned by AI"
+        },
+        "riskScore": {
+          "type": "number",
+          "description": "Calculated risk score from 0 to 100"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the check was performed"
+        }
+      },
+      "required": ["id", "type", "inputSummary", "verdict", "riskScore", "timestamp"]
+    },
+    "Report": {
+      "title": "Report",
+      "description": "Citizen submitted scam incident report",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the report"
+        },
+        "category": {
+          "type": "string",
+          "enum": ["digital_arrest", "whatsapp_phishing", "customs_courier", "identity_theft", "other"],
+          "description": "Scam classification category"
+        },
+        "description": {
+          "type": "string",
+          "description": "Detailed narrative of the fraud encounter"
+        },
+        "scammerDetails": {
+          "type": "string",
+          "description": "Identifiable details of the scammer (e.g. phone, website, skype ID)"
+        },
+        "amountLost": {
+          "type": "number",
+          "description": "Financial loss incurred (if any)"
+        },
+        "reporterName": {
+          "type": "string",
+          "description": "Optional name of the citizen submitting the report"
+        },
+        "isAnonymous": {
+          "type": "boolean",
+          "description": "Whether the reporter chose to remain anonymous"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the report was submitted"
+        },
+        "referenceId": {
+          "type": "string",
+          "description": "Sovereign-formatted incident reference ID (e.g. RAKSHA-2026-XXXXX)"
+        }
+      },
+      "required": ["id", "category", "description", "scammerDetails", "amountLost", "isAnonymous", "timestamp", "referenceId"]
+    }
+  },
+  "firestore": {
+    "/shared_results/{shareId}": {
+      "schema": "SharedResult",
+      "description": "Read-only shared diagnostics result summaries with 7-day expiry"
+    },
+    "/checks/{checkId}": {
+      "schema": "Check",
+      "description": "Safety check records for the public and officer dashboard"
+    },
+    "/reports/{reportId}": {
+      "schema": "Report",
+      "description": "Scam incident reports filed by citizens"
+    }
+  }
+}
