@@ -96,7 +96,3 @@ The app also supports one-click deployment to Google Cloud Run directly from Goo
 ## 🤝 Contributing
 
 This project was built for the ET AI Hackathon 2026. Issues and pull requests are welcome — please open an issue before submitting major changes.
-
-## 📄 License
-
-*(Add your chosen license here, e.g. MIT)*
